@@ -1,11 +1,13 @@
+from django.core.validators import EmailValidator, MinLengthValidator
+from django.contrib.auth.password_validation import CommonPasswordValidator
+
+from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
-# from rest_framework.validators import UniqueValidator
 
-from users.models import Subscribe, User
+from users.models import User, Subscribe
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserInfoSerializer(UserSerializer):
     is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
@@ -17,25 +19,35 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         user = self.context['request'].user
-        is_subscribed = Subscribe.objects.filter(
-            author=obj, subscriber=user
-            ).exists()
-        return is_subscribed
+        if user.is_anonymous:
+            return False
+        return Subscribe.objects.filter(user=user, author=obj.id).exists()
 
 
-class UserCreateSerializer(serializers.ModelSerializer):
-    """Сериалайзер для модели User."""
-    username = serializers.CharField(
-        max_length=150,
-        validators=[UniqueValidator(queryset=User.objects.all())])
-    email = serializers.EmailField(
-        max_length=254,
-        validators=[UniqueValidator(queryset=User.objects.all())])
-    first_name = serializers.CharField(max_length=150)
-    last_name = serializers.CharField(max_length=150)
+class CreateUserSerializer(UserCreateSerializer):
+    email = serializers.EmailField(validators=[EmailValidator()])
+    password = serializers.CharField(validators=[MinLengthValidator(8),
+                                                 CommonPasswordValidator()])
 
     class Meta:
-
         model = User
-        fields = ('email', 'id', 'username',
-                  'password', 'first_name', 'last_name')
+        fields = (
+            'email',
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'password'
+        )
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            email=validated_data['email'],
+            username=validated_data['username'],
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user

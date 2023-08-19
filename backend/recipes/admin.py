@@ -8,17 +8,30 @@ from .models import (
     Recipe,
     RecipeIngredient,
     TagRecipe,
+    ShoppingCart,
+    Favorite
 )
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('name', 'color', 'slug')
+    list_display = ('id', 'name', 'color', 'slug')
+
+
+class RecipeIngredientsInLine(admin.TabularInline):
+    model = Recipe.ingredients.through
+    min_num = 1
+    extra = 1
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author')
-    # фильтрация
-    list_filter = ('author', 'name', 'tag')
+    list_display = ('name', 'author', 'count_favorites')
+    list_filter = ('author', 'name', 'tags')
+    filter_horizontal = ('tags', )
+    inlines = (RecipeIngredientsInLine, )
+
+    def count_favorites(self, obj):
+        return obj.favorite_set.count()
+    count_favorites.short_description = 'Added to favorites'
 
 
 class IngredientResourse(resources.ModelResource):
@@ -30,7 +43,7 @@ class IngredientResourse(resources.ModelResource):
 class IngredientAdmin(ImportExportModelAdmin):
     resource_class = IngredientResourse
     list_display = ('name', 'measurement_unit')
-    # фильтрация
+    search_fields = ('name', )
     list_filter = ('name', )
 
 
@@ -38,8 +51,18 @@ class TagRecipeAdmin(admin.ModelAdmin):
     list_display = ('recipe', 'tag')
 
 
+class FavoriteAdmin(admin.ModelAdmin):
+    list_display = ('recipe', 'user', 'count_favorites')
+
+    def count_favorites(self, obj):
+        return obj.recipe.favorite_set.count()
+    count_favorites.short_description = 'Added to favorites'
+
+
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(RecipeIngredient)
 admin.site.register(TagRecipe, TagRecipeAdmin)
+admin.site.register(ShoppingCart)
+admin.site.register(Favorite, FavoriteAdmin)
