@@ -38,8 +38,7 @@ from recipes.models import (
     Recipe,
     Favorite,
     ShoppingCart,
-    RecipeIngredient
-    )
+    RecipeIngredient)
 
 
 class TagViewSet(ReadOnlyModelViewSet):

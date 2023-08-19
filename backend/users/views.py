@@ -13,8 +13,7 @@ from api.serializers import SubscribeSerializer
 from users.models import User, Subscribe
 from users.serializers import (
     UserInfoSerializer,
-    CreateUserSerializer,
-    )
+    CreateUserSerializer)
 
 
 class CustomUserViewSet(UserViewSet):

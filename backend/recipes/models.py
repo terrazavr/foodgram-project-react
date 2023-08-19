@@ -43,10 +43,8 @@ class Recipe(models.Model):
         related_name='recipes')
     tags = models.ManyToManyField(Tag, related_name='recipes')
     cooking_time = models.PositiveSmallIntegerField(validators=[
-            MinValueValidator(
-                1,
-                message='Время приготовления не может быть < 1 мин.'
-            )
+        MinValueValidator(
+            1, message='Время приготовления не может быть < 1 мин.')
         ])
     pub_date = models.DateTimeField(auto_now_add=True)
 
@@ -61,18 +59,15 @@ class Recipe(models.Model):
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(
         Recipe,
-        on_delete=models.CASCADE
-        )
+        on_delete=models.CASCADE)
 
     ingredient = models.ForeignKey(
         Ingredient,
-        on_delete=models.CASCADE
-        )
+        on_delete=models.CASCADE)
 
     amount = models.FloatField(validators=[
-            MinValueValidator(
-                1,
-                message='Минимальное количество не меньше чем 1'
+        MinValueValidator(
+            1, message='Минимальное количество не меньше чем 1'
             )
         ])
 
@@ -83,8 +78,7 @@ class RecipeIngredient(models.Model):
     def __str__(self):
         return (
             f'{self.ingredient.name} - '
-            f'{self.amount} {self.ingredient.measurement_unit}'
-            )
+            f'{self.amount} {self.ingredient.measurement_unit}')
 
 
 class TagRecipe(models.Model):

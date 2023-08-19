@@ -231,8 +231,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         instance.text = validated_data.get('text', instance.text)
         instance.cooking_time = validated_data.get(
             'cooking_time',
-            instance.cooking_time
-            )
+            instance.cooking_time)
         instance.save()
         RecipeIngredient.objects.filter(recipe=instance).delete()
         for ingredient in ingredients:
