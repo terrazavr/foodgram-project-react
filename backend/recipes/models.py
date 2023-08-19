@@ -44,8 +44,7 @@ class Recipe(models.Model):
     tags = models.ManyToManyField(Tag, related_name='recipes')
     cooking_time = models.PositiveSmallIntegerField(validators=[
         MinValueValidator(
-            1, message='Время приготовления не может быть < 1 мин.')
-        ])
+            1, message='Время приготовления не может быть < 1 мин.')])
     pub_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -67,9 +66,7 @@ class RecipeIngredient(models.Model):
 
     amount = models.FloatField(validators=[
         MinValueValidator(
-            1, message='Минимальное количество не меньше чем 1'
-            )
-        ])
+            1, message='Минимальное количество не меньше чем 1')])
 
     class Meta:
         verbose_name = 'Ингридиент в рецепте'
