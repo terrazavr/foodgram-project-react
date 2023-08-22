@@ -9,12 +9,13 @@ from .models import (
     RecipeIngredient,
     TagRecipe,
     ShoppingCart,
-    Favorite
+    Favorite,
 )
 
 
+@admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'color', 'slug')
+    list_display = ("id", "name", "color", "slug")
 
 
 class RecipeIngredientsInLine(admin.TabularInline):
@@ -23,46 +24,46 @@ class RecipeIngredientsInLine(admin.TabularInline):
     extra = 1
 
 
+@admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author', 'count_favorites')
-    list_filter = ('author', 'name', 'tags')
-    filter_horizontal = ('tags', )
-    inlines = (RecipeIngredientsInLine, )
+    list_display = ("name", "author", "count_favorites")
+    list_filter = ("author", "name", "tags")
+    filter_horizontal = ("tags",)
+    inlines = (RecipeIngredientsInLine,)
 
     def count_favorites(self, obj):
         return obj.favorite_set.count()
-    count_favorites.short_description = 'Added to favorites'
+
+    count_favorites.short_description = "Added to favorites"
 
 
 class IngredientResourse(resources.ModelResource):
-
     class Meta:
         model = Ingredient
 
 
+@admin.register(Ingredient)
 class IngredientAdmin(ImportExportModelAdmin):
     resource_class = IngredientResourse
-    list_display = ('name', 'measurement_unit')
-    search_fields = ('name', )
-    list_filter = ('name', )
+    list_display = ("name", "measurement_unit")
+    search_fields = ("name",)
+    list_filter = ("name",)
 
 
+@admin.register(TagRecipe)
 class TagRecipeAdmin(admin.ModelAdmin):
-    list_display = ('recipe', 'tag')
+    list_display = ("recipe", "tag")
 
 
+@admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ('recipe', 'user', 'count_favorites')
+    list_display = ("recipe", "user", "count_favorites")
 
     def count_favorites(self, obj):
         return obj.recipe.favorite_set.count()
-    count_favorites.short_description = 'Added to favorites'
+
+    count_favorites.short_description = "Added to favorites"
 
 
-admin.site.register(Tag, TagAdmin)
-admin.site.register(Ingredient, IngredientAdmin)
-admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(RecipeIngredient)
-admin.site.register(TagRecipe, TagRecipeAdmin)
 admin.site.register(ShoppingCart)
-admin.site.register(Favorite, FavoriteAdmin)

@@ -7,14 +7,13 @@ class ReadOnly(BasePermission):
 
 
 class IsOwnerOrReadOnly(BasePermission):
-    message = 'Вы не являетесь владельцем этого объекта, действие недоступно.'
+    message = "Вы не являетесь владельцем этого объекта, действие недоступно."
 
     def has_permission(self, request, view):
-        if view.action == 'create':
-            return request.user.is_authenticated
-        return True
+        return view.action == "create" or request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        if view.action in ['update', 'partial_update', 'destroy']:
-            return obj.author == request.user
-        return True
+        return (
+            view.action in ["update", "partial_update", "destroy"]
+            and obj.author == request.user
+        )
