@@ -1,6 +1,4 @@
 from django.core.validators import EmailValidator, MinLengthValidator
-from django.contrib.auth.password_validation import CommonPasswordValidator
-
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
@@ -26,7 +24,7 @@ class UserInfoSerializer(UserSerializer):
 class CreateUserSerializer(UserCreateSerializer):
     email = serializers.EmailField(validators=[EmailValidator()])
     password = serializers.CharField(
-        validators=[MinLengthValidator(MIN_LEN_PASSWORD),]
+        validators=[MinLengthValidator(MIN_LEN_PASSWORD), ]
     )
 
     class Meta:
