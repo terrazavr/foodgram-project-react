@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 SECRET_KEY = config("SECRET_KEY", default="SECRET_KEY")
 
-DEBUG = config("DEBUG", cast=bool)
+DEBUG = config("DEBUG", cast=bool, default="TRUE")
 
 ALLOWED_HOSTS = ["158.160.74.8", "127.0.0.1", "localhost", "foodie.hopto.org"]
 
