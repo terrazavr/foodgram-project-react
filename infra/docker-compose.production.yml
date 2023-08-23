@@ -4,36 +4,33 @@ volumes:
   pg_data:
   static:
   media:
-#  shopping_cart:
 
 services:
   db:
     image: postgres:13
-    env_file: ../.env
+    env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
   backend:
-    build: ./backend
+    image: terrazavr/foodgram_backend:latest
     volumes:
       - static:/app/static/
       - media:/app/media/
-    env_file: ../.env
+    env_file: .env
     depends_on:
       - db
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: terrazavr/foodgram_frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
 
   nginx: 
-    image: nginx:1.22.1
-    env_file: ../.env
+    image: terrazavr/foodgram_nginx:latest
+    env_file: .env
     restart: always
     ports:
       - "7000:80"
@@ -41,4 +38,4 @@ services:
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
       - static:/var/html/static/
-      - media:/var/html/media/
+      - media:/var/html/media

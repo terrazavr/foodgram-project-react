@@ -17,8 +17,7 @@ def shopping_cart_pdf(shopping_list):
     pdfmetrics.registerFont(
         TTFont(
             "Nunito",
-            "/Users/Di_Yu/Dev/Diploma"
-            "/foodgram-project-react/fonts/Nunito-ExtraLight.ttf",
+            "/app/fonts/Nunito-ExtraLight.ttf",
         )
     )
 
