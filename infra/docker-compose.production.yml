@@ -5,6 +5,7 @@ volumes:
   static:
   media:
 
+
 services:
   db:
     image: postgres:13
@@ -21,17 +22,18 @@ services:
     depends_on:
       - db
 
+
   frontend:
     image: terrazavr/foodgram_frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
 
-  nginx: 
+  nginx:
     image: terrazavr/foodgram_nginx:latest
     env_file: .env
     restart: always
     ports:
-      - "8000:80"
+      - "8080:80"
     volumes:
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
