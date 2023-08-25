@@ -4,6 +4,7 @@ from djoser.views import UserViewSet
 
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
@@ -57,6 +58,8 @@ class CustomUserViewSet(UserViewSet):
 
         if request.method == "POST":
             try:
+                if request.user == author:
+                    raise ValidationError("Нельзя подписаться на себя")
                 serializer = SubscribeSerializer(
                     data={"user": request.user.pk, "author": author.pk},
                     context={"request": request},

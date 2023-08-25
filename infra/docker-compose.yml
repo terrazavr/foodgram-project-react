@@ -4,7 +4,6 @@ volumes:
   pg_data:
   static:
   media:
-#  shopping_cart:
 
 services:
   db:
@@ -36,7 +35,7 @@ services:
     env_file: ../.env
     restart: always
     ports:
-      - "7000:80"
+      - "8000:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ../frontend/build:/usr/share/nginx/html/

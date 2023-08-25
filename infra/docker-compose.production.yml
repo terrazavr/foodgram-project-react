@@ -11,8 +11,6 @@ services:
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
 
   backend:
     image: terrazavr/foodgram_backend:latest
@@ -33,7 +31,7 @@ services:
     env_file: .env
     restart: always
     ports:
-      - "7000:80"
+      - "8000:80"
     volumes:
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
