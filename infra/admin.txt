@@ -1,6 +1,0 @@
-IP: 158.160.74.8;
-django_admin: https://foodie.hopto.org/admin/
-
-Superuser
-email: yu_dilyara@mail;
-password: Aa111111
