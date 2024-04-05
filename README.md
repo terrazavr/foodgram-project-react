@@ -8,7 +8,7 @@
 [![GitHub%20Actions](https://img.shields.io/badge/-GitHub%20Actions-464646?style=flat-square&logo=GitHub%20actions)](https://github.com/features/actions)
 
 
-# Foodgram
+# Foodie
 https://foodie.hopto.org/ - это продуктовый помощник или блог для любителей готовить и вкусно поесть.
 Здесь любой желающий может посмотреть рецепты интересных блюд, а зарегистрированные пользователи могут размещать свои рецепты и пользоваться полным функционалом платформы.
 
